@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benedikt Ruske – BI Project Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #f4f6fa;
+    --surface: #ffffff;
+    --surface2:#eef1f7;
+    --border:  #d6dce8;
+    --accent:  #1566b7;
+    --accent2: #0d90c8;
+    --gold:    #d4860a;
+    --text:    #1a2236;
+    --text2:   #3d4f6e;
+    --muted:   #7a8ba8;
+    --radius:  9px;
+    --shadow:  0 1px 4px rgba(20,50,100,0.08), 0 4px 16px rgba(20,50,100,0.05);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 14px; min-height: 100vh; }
+
+  /* HEADER */
+  header {
+    background: #fff; border-bottom: 1px solid var(--border);
+    padding: 20px 40px 16px; display: flex; align-items: center; gap: 18px;
+    box-shadow: 0 2px 8px rgba(20,50,100,0.06);
+  }
+  .header-logo {
+    width: 46px; height: 46px; background: var(--accent); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; color: #fff; letter-spacing: 1px; flex-shrink: 0;
+  }
+  .header-text h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.5px; color: var(--text); }
+  .header-text p  { color: var(--muted); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+  .header-right   { margin-left: auto; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; color: var(--muted); text-align: right; letter-spacing: 1px; }
+  .header-right a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .header-right a:hover { color: var(--accent2); }
+
+  /* MAIN */
+  .main { padding: 28px 40px 36px; max-width: 1400px; margin: 0 auto; }
+
+  /* KPIs */
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 26px; }
+  .kpi  { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 26px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+  .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .kpi.k1::before { background: var(--accent); }
+  .kpi.k2::before { background: var(--accent2); }
+  .kpi.k3::before { background: var(--gold); }
+  .kpi-value { font-family: 'Barlow Condensed', sans-serif; font-size: 50px; font-weight: 700; line-height: 1; }
+  .kpi.k1 .kpi-value { color: var(--accent); }
+  .kpi.k2 .kpi-value { color: var(--accent2); }
+  .kpi.k3 .kpi-value { color: var(--gold); }
+  .kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-top: 6px; }
+  .kpi-sub   { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  /* FILTERS */
+  .filters-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 22px; align-items: flex-start; }
+  .filter-group { display: flex; flex-direction: column; gap: 6px; }
+  .filter-group label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 600; }
+  .filter-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; user-select: none; }
+  .pill.inactive { background: var(--surface2); border-color: var(--border); color: var(--text2); }
+  .pill.inactive:hover { border-color: var(--accent); color: var(--accent); }
+  .pill.active-dev  { background: rgba(21,102,183,0.10); border-color: var(--accent);  color: var(--accent);  font-weight: 600; }
+  .pill.active-con  { background: rgba(13,144,200,0.10); border-color: var(--accent2); color: var(--accent2); font-weight: 600; }
+  .pill.active-tra  { background: rgba(212,134,10,0.10); border-color: var(--gold);    color: var(--gold);    font-weight: 600; }
+  .pill.active-ind  { background: rgba(21,102,183,0.08); border-color: var(--accent);  color: var(--accent);  font-weight: 600; }
+  .pill.active-tool { background: rgba(212,134,10,0.08); border-color: var(--gold);    color: var(--gold);    font-weight: 600; }
+  .reset-btn { padding: 4px 14px; border-radius: 20px; font-size: 11px; background: transparent; border: 1px solid var(--border); color: var(--muted); cursor: pointer; transition: all 0.15s; font-family: 'Barlow', sans-serif; align-self: flex-end; }
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* SECTION TITLE */
+  .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+
+  /* LEGEND */
+  .legend-row  { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--text2); font-weight: 500; }
+  .legend-dot  { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* GANTT */
+  .gantt-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 20px 14px; overflow-x: auto; box-shadow: var(--shadow); margin-bottom: 28px; }
+  .gantt-container { min-width: 900px; }
+  .gantt-axis { display: grid; margin-left: 224px; margin-bottom: 6px; }
+  .gantt-year-label { font-size: 10px; color: var(--muted); text-align: center; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .gantt-body { position: relative; }
+  .gantt-grid-lines { position: absolute; top: 0; bottom: 0; left: 224px; right: 0; display: grid; pointer-events: none; }
+  .gantt-grid-line  { border-left: 1px solid var(--border); }
+  .gantt-row { display: flex; align-items: center; min-height: 38px; padding: 3px 0; border-bottom: 1px solid var(--surface2); transition: background 0.12s; position: relative; }
+  .gantt-row:last-child { border-bottom: none; }
+  .gantt-row:hover { background: rgba(21,102,183,0.03); }
+  .gantt-label { width: 224px; min-width: 224px; padding-right: 16px; text-align: right; font-size: 12px; color: var(--text); line-height: 1.3; font-weight: 500; }
+  .gantt-label .role-text { font-size: 10px; color: var(--muted); display: block; margin-top: 1px; font-weight: 400; }
+  .gantt-bars { flex: 1; position: relative; height: 100%; min-height: 38px; }
+  .gantt-bar { position: absolute; top: 50%; transform: translateY(-50%); height: 20px; border-radius: 4px; cursor: pointer; transition: filter 0.15s, transform 0.15s; }
+  .gantt-bar:hover { filter: brightness(0.85); transform: translateY(-50%) scaleY(1.12); z-index: 10; }
+  .gantt-bar.ongoing { border-right: 3px solid rgba(255,255,255,0.8); }
+  .bar-cat-Developer  { background: linear-gradient(90deg, #1054a0, #1a7fd4); }
+  .bar-cat-Consultant { background: linear-gradient(90deg, #0978ad, #0dacd8); }
+  .bar-cat-Trainer    { background: linear-gradient(90deg, #b06800, #e09010); }
+
+  /* TOOLTIP */
+  .tooltip { position: fixed; background: #fff; border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: var(--radius); padding: 14px 16px; max-width: 340px; font-size: 12px; z-index: 1000; pointer-events: none; box-shadow: 0 8px 32px rgba(20,50,100,0.14); display: none; }
+  .tooltip.visible { display: block; }
+  .tooltip-title { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+  .tooltip-dates { font-size: 11px; color: var(--accent); margin-bottom: 8px; font-weight: 500; }
+  .tooltip-row   { margin-bottom: 5px; }
+  .tooltip-row span.lbl { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 1px; font-weight: 600; }
+  .tooltip-row span.val { color: var(--text2); line-height: 1.4; }
+
+  /* NO RESULTS */
+  .no-results { text-align: center; color: var(--muted); padding: 40px; font-size: 13px; display: none; }
+
+  /* ONGOING NOTE */
+  .ongoing-note { font-size: 10px; color: var(--muted); margin-top: 10px; letter-spacing: 0.5px; }
+  .ongoing-note .swatch { display: inline-block; width: 16px; height: 3px; background: rgba(255,255,255,0.8); border: 1px solid #aaa; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+
+  /* FOOTER */
+  footer { text-align: center; padding: 18px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); background: var(--surface); letter-spacing: 1px; }
+  footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">BR</div>
+  <div class="header-text">
+    <h1>Benedikt Ruske &mdash; BI Project Overview</h1>
+    <p>Business &amp; Data Analysis &nbsp;|&nbsp; Power BI &nbsp;|&nbsp; SQL &nbsp;|&nbsp; Python</p>
+  </div>
+  <div class="header-right">
+    <a href="https://www.berubi.co" target="_blank">berubi.co</a><br>
+    Stand: 03.2026
+  </div>
+</header>
+
+<div class="main">
+
+  <div class="kpis">
+    <div class="kpi k1">
+      <div class="kpi-value" id="kpi-projects">13</div>
+      <div class="kpi-label">Total Projects</div>
+      <div class="kpi-sub" id="kpi-projects-sub">2 ongoing &nbsp;|&nbsp; 11 completed</div>
+    </div>
+    <div class="kpi k2">
+      <div class="kpi-value" id="kpi-industries">10</div>
+      <div class="kpi-label">Industries</div>
+      <div class="kpi-sub" id="kpi-industries-sub">Manufacturing, Logistics, Automotive &amp; more</div>
+    </div>
+    <div class="kpi k3">
+      <div class="kpi-value" id="kpi-avg">1.4y</div>
+      <div class="kpi-label">Avg. Project Duration</div>
+      <div class="kpi-sub" id="kpi-avg-sub">Per-project calendar duration</div>
+    </div>
+  </div>
+
+  <div class="filters-row">
+    <div class="filter-group">
+      <label>Category</label>
+      <div class="filter-pills" id="filter-category"></div>
+    </div>
+    <div class="filter-group">
+      <label>Industry</label>
+      <div class="filter-pills" id="filter-industry"></div>
+    </div>
+    <div class="filter-group">
+      <label>Tools</label>
+      <div class="filter-pills" id="filter-tools"></div>
+    </div>
+    <button class="reset-btn" onclick="resetFilters()">Reset all</button>
+  </div>
+
+  <div class="legend-row">
+    <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(90deg,#1054a0,#1a7fd4)"></div>Developer</div>
+    <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(90deg,#0978ad,#0dacd8)"></div>Consultant</div>
+    <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(90deg,#b06800,#e09010)"></div>Trainer</div>
+  </div>
+
+  <div class="section-title">Project Timeline</div>
+  <div class="gantt-wrap">
+    <div class="gantt-container" id="gantt-container"></div>
+    <div class="no-results" id="no-results">No projects match the selected filters.</div>
+    <div class="ongoing-note"><span class="swatch"></span>Right edge = today (March 2026) for ongoing projects</div>
+  </div>
+
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<footer>
+  &copy; 2026 &nbsp;<a href="https://www.berubi.co" target="_blank">berubi.co</a> &nbsp;&mdash;&nbsp; Benedikt Ruske &nbsp;|&nbsp; Business &amp; Data Analysis
+</footer>
+
+<script>
+const TODAY = new Date(2026, 2, 17);
+
+// Tool normalisation map: raw value -> canonical label
+// Groups similar tools under one filter pill
+const TOOL_NORM = {
+  'advanced excel':          'Excel',
+  'excel':                   'Excel',
+  'sql':                     'SQL',
+  'mysql':                   'SQL',       // grouped
+  'sql views':               'SQL',       // grouped
+  'etl':                     'ETL',
+  'power query':             'Power Query',
+  'm':                       'M',
+  'data modelling':          'Data Modelling',
+  'datamodelling':           'Data Modelling', // normalise typo variant
+  'power bi':                'Power BI',
+  'dax':                     'DAX',
+  'dataflows':               'Dataflows',
+  'python':                  'Python',
+  'power bi administration': 'Power BI Administration',
+  'power pivot':             'Power Pivot',
+  'report server':           'Report Server',
+};
+
+function normTool(raw) {
+  return TOOL_NORM[raw.trim().toLowerCase()] || raw.trim();
+}
+
+function parseTools(str) {
+  if (!str || str === '—') return [];
+  return [...new Set(str.split(',').map(t => normTool(t)))];
+}
+
+const PROJECTS = [
+  {
+    id: 0,
+    customer:      'Food Manufacturing (SME)',
+    role:          'Power BI Developer',
+    category:      'Developer',
+    industry:      'Manufacturing',
+    scope:         'KPI dashboards for capacity planning and production OEE. ETL, data modelling, dataset and report development.',
+    from:          new Date(2022, 10, 1),
+    to:            null,
+    dataSources:   'Excel, IBM AS400 SQL, SharePoint Lists',
+    toolsRaw:      'Excel, SQL, ETL, Power Query, M, Data Modelling, Power BI, DAX',
+    durationYears: 3.2
+  },
+  {
+    id: 1,
+    customer:      'Logistics (SME, 1000+ emp.)',
+    role:          'Business & Data Analyst',
+    category:      'Consultant',
+    industry:      'Logistics & Transportation',
+    scope:         'Testing data quality & integrity, develop data structure and modelling, ETL, Power BI dataset development, KPI dashboards for HR, Sales & Operations, Controlling consulting, employee training, data literacy consulting, involvement in KI-Projects.',
+    from:          new Date(2021, 10, 1),
+    to:            null,
+    dataSources:   'Excel, RDB, SQL Views, Lukanet, Salesforce, Web-API',
+    toolsRaw:      'Excel, SQL, ETL, Power Query, M, Data Modelling, Power BI, DAX, Power BI Administration',
+    durationYears: 4.2
+  },
+  {
+    id: 2,
+    customer:      'Mechanical Engineering (SME)',
+    role:          'Power BI Developer',
+    category:      'Developer',
+    industry:      'Mechanical Engineering',
+    scope:         'KPI dashboards for inventory and goods received quality control & testing. ETL, dataset, dataflows and report development, complex DAX solutions.',
+    from:          new Date(2024, 0, 1),
+    to:            new Date(2025, 5, 1),
+    dataSources:   'Dataverse, RDB, Excel',
+    toolsRaw:      'ETL, Power Query, M, Data Modelling, Dataflows, Power BI, DAX, Python',
+    durationYears: 1.4
+  },
+  {
+    id: 3,
+    customer:      'DB (Deutsche Bahn / Rail)',
+    role:          'Power BI Developer',
+    category:      'Developer',
+    industry:      'Logistics & Transportation',
+    scope:         'KPI dashboards for incidences.',
+    from:          new Date(2026, 0, 30),
+    to:            new Date(2026, 2, 31),
+    dataSources:   'Dataverse, RDB, Excel',
+    toolsRaw:      'ETL, Data Modelling, Power Query, M, Power BI, DAX',
+    durationYears: 0.17
+  },
+  {
+    id: 4,
+    customer:      'Landkreis (Public Admin.)',
+    role:          'Speaker / Trainer',
+    category:      'Trainer',
+    industry:      'Public Sector',
+    scope:         'Speaker for Power BI seminar series.',
+    from:          new Date(2021, 5, 1),
+    to:            new Date(2023, 11, 1),
+    dataSources:   '—',
+    toolsRaw:      'Excel, Power BI',
+    durationYears: 2.5
+  },
+  {
+    id: 5,
+    customer:      'Private Health Insurance',
+    role:          'Power BI Developer',
+    category:      'Developer',
+    industry:      'Insurance',
+    scope:         'Analysing and visualizing billing and service data. Source DW, develop ETL, data modelling and dashboards.',
+    from:          new Date(2023, 2, 1),
+    to:            new Date(2023, 8, 1),
+    dataSources:   'Data Warehouse',
+    toolsRaw:      'Excel, SQL, ETL, Data Modelling, Power Query, M, Power BI, DAX, Report Server',
+    durationYears: 0.5
+  },
+  {
+    id: 6,
+    customer:      'Automotive (Global Player)',
+    role:          'Power BI Developer',
+    category:      'Developer',
+    industry:      'Automotive',
+    scope:         'Project 1 – Project Management Budgeting: Consolidation of 200+ project management tables, merging data sources, optimization of complex BI reports. Project 2 – OEE Reporting: Production line records (parts and failures), data integrity, ETL, development of visualizations.',
+    from:          new Date(2022, 2, 1),
+    to:            new Date(2024, 5, 1),
+    dataSources:   'Excel, SharePoint Lists, SQL Server',
+    toolsRaw:      'Advanced Excel, ETL, Power Query, Power BI, DAX',
+    durationYears: 2.2
+  },
+  {
+    id: 7,
+    customer:      'Automotive Quality Mgmt.',
+    role:          'Power BI Developer',
+    category:      'Developer',
+    industry:      'Automotive',
+    scope:         'Power BI dashboards based on Excel database.',
+    from:          new Date(2022, 2, 1),
+    to:            new Date(2023, 0, 1),
+    dataSources:   'Excel',
+    toolsRaw:      'Excel, ETL, Data Modelling, Power BI',
+    durationYears: 0.8
+  },
+  {
+    id: 8,
+    customer:      'BI Consulting Co. (Partner)',
+    role:          'Trainer',
+    category:      'Trainer',
+    industry:      'IT Consulting',
+    scope:         'Speaker for Power BI customer trainings.',
+    from:          new Date(2022, 7, 1),
+    to:            new Date(2022, 10, 1),
+    dataSources:   '—',
+    toolsRaw:      'Power BI',
+    durationYears: 0.2
+  },
+  {
+    id: 9,
+    customer:      'Consumer Goods Multinational',
+    role:          'Power BI Developer',
+    category:      'Developer',
+    industry:      'Consumer Goods',
+    scope:         'Develop complex user datasets for product and market shares.',
+    from:          new Date(2022, 7, 1),
+    to:            new Date(2022, 8, 1),
+    dataSources:   'SAP HANA, SQL Views',
+    toolsRaw:      'SQL, Power Query, Power BI, Dataflows, Datamodelling, DAX',
+    durationYears: 0.1
+  },
+  {
+    id: 10,
+    customer:      'Social Institution (NPO)',
+    role:          'BI Consultant',
+    category:      'Consultant',
+    industry:      'Non-Profit / Social',
+    scope:         'Customer survey analysis. Data collection and summarization, analysis, dashboards.',
+    from:          new Date(2021, 8, 1),
+    to:            new Date(2023, 0, 1),
+    dataSources:   'Excel',
+    toolsRaw:      'Excel, Power Query, Power Pivot, DAX',
+    durationYears: 1.3
+  },
+  {
+    id: 11,
+    customer:      'DB (Deutsche Bahn / Rail)',
+    role:          'SQL Developer',
+    category:      'Developer',
+    industry:      'Logistics & Transportation',
+    scope:         'Budget distribution calculation, database migration.',
+    from:          new Date(2021, 6, 1),
+    to:            new Date(2021, 6, 31),
+    dataSources:   'MySQL Database',
+    toolsRaw:      'SQL',
+    durationYears: 0.08
+  },
+  {
+    id: 12,
+    customer:      'Training & Entertainment (SME)',
+    role:          'Power BI Consultant',
+    category:      'Developer',
+    industry:      'Education & Entertainment',
+    scope:         'Customer and training analysis dashboard.',
+    from:          new Date(2020, 11, 1),
+    to:            new Date(2021, 7, 1),
+    dataSources:   'Excel, MySQL',
+    toolsRaw:      'Excel, SQL, ETL, Datamodelling, Power BI, DAX',
+    durationYears: 0.7
+  }
+];
+
+// Resolve normalised tools array for each project
+PROJECTS.forEach(p => { p.tools = parseTools(p.toolsRaw); });
+
+// Build ordered, de-duplicated tool filter list from Tools column only
+const TOOL_FILTER_ORDER = [
+  'Power BI', 'DAX', 'Power Query', 'M', 'ETL', 'Data Modelling',
+  'SQL', 'Excel', 'Dataflows', 'Python',
+  'Power BI Administration', 'Power Pivot', 'Report Server'
+];
+// Only show pills that actually appear in at least one project
+const usedTools = new Set(PROJECTS.flatMap(p => p.tools));
+const TOOL_PILLS = TOOL_FILTER_ORDER.filter(t => usedTools.has(t));
+
+// ── State ──
+let activeCategories = new Set(), activeIndustries = new Set(), activeTools = new Set();
+
+// ── Gantt range ──
+const GANTT_START = new Date(2020, 8, 1);
+const GANTT_END   = new Date(2026, 5, 1);
+const totalMs     = GANTT_END - GANTT_START;
+function pct(date) { return Math.max(0, Math.min(100, (date - GANTT_START) / totalMs * 100)); }
+
+// ── Build filters ──
+function buildFilters() {
+  const catColors = { Developer: 'active-dev', Consultant: 'active-con', Trainer: 'active-tra' };
+  ['Developer', 'Consultant', 'Trainer'].forEach(c =>
+    addPill('filter-category', c, activeCategories, catColors[c]));
+  [...new Set(PROJECTS.map(p => p.industry))].sort().forEach(i =>
+    addPill('filter-industry', i, activeIndustries, 'active-ind'));
+  TOOL_PILLS.forEach(t =>
+    addPill('filter-tools', t, activeTools, 'active-tool'));
+}
+
+function addPill(containerId, value, set, activeClass) {
+  const pill = document.createElement('div');
+  pill.className = 'pill inactive';
+  pill.textContent = value;
+  pill.dataset.activeClass = activeClass;
+  pill.onclick = () => toggleFilter(pill, set, value);
+  document.getElementById(containerId).appendChild(pill);
+}
+
+function toggleFilter(pill, set, value) {
+  if (set.has(value)) { set.delete(value); pill.className = 'pill inactive'; }
+  else { set.add(value); pill.className = `pill ${pill.dataset.activeClass}`; }
+  renderGantt(); updateKPIs();
+}
+
+function resetFilters() {
+  activeCategories.clear(); activeIndustries.clear(); activeTools.clear();
+  document.querySelectorAll('.pill').forEach(p => p.className = 'pill inactive');
+  renderGantt(); updateKPIs();
+}
+
+// ── Filter logic (against normalised tools array) ──
+function isVisible(p) {
+  if (activeCategories.size && !activeCategories.has(p.category)) return false;
+  if (activeIndustries.size && !activeIndustries.has(p.industry)) return false;
+  if (activeTools.size && ![...activeTools].some(t => p.tools.includes(t))) return false;
+  return true;
+}
+
+// ── Update KPIs ──
+function updateKPIs() {
+  const vis = PROJECTS.filter(isVisible);
+  const on  = vis.filter(p => !p.to).length;
+  document.getElementById('kpi-projects').textContent     = vis.length;
+  document.getElementById('kpi-projects-sub').textContent = `${on} ongoing \u00a0|\u00a0 ${vis.length - on} completed`;
+  document.getElementById('kpi-industries').textContent   = new Set(vis.map(p => p.industry)).size;
+  if (vis.length) {
+    const avg = vis.reduce((s, p) => s + p.durationYears, 0) / vis.length;
+    document.getElementById('kpi-avg').textContent     = avg.toFixed(1) + 'y';
+    document.getElementById('kpi-avg-sub').textContent = `Average across ${vis.length} project${vis.length !== 1 ? 's' : ''}`;
+  } else {
+    document.getElementById('kpi-avg').textContent     = '—';
+    document.getElementById('kpi-avg-sub').textContent = 'No projects selected';
+  }
+}
+
+// ── Render Gantt ──
+function renderGantt() {
+  const container = document.getElementById('gantt-container');
+  const noResults = document.getElementById('no-results');
+  container.innerHTML = '';
+  const vis = PROJECTS.filter(isVisible);
+  if (!vis.length) { noResults.style.display = 'block'; return; }
+  noResults.style.display = 'none';
+
+  const sorted = [...vis].sort((a, b) => {
+    const d = (!b.to ? 1 : 0) - (!a.to ? 1 : 0);
+    return d !== 0 ? d : b.from - a.from;
+  });
+
+  const years   = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
+  const colDefs = years.map(y => {
+    const s = new Date(y, 0, 1), e = new Date(y + 1, 0, 1);
+    const w = (Math.min(e, GANTT_END) - Math.max(s, GANTT_START)) / totalMs * 100;
+    return w > 0 ? `${w}fr` : null;
+  }).filter(Boolean);
+  const colStr = colDefs.join(' ');
+
+  // Year axis
+  const axis = document.createElement('div');
+  axis.className = 'gantt-axis';
+  axis.style.gridTemplateColumns = colStr;
+  years.forEach(y => {
+    if (new Date(y, 0, 1) >= GANTT_END || new Date(y + 1, 0, 1) <= GANTT_START) return;
+    const lbl = document.createElement('div');
+    lbl.className = 'gantt-year-label';
+    lbl.textContent = y;
+    axis.appendChild(lbl);
+  });
+  container.appendChild(axis);
+
+  // Body + grid lines
+  const body = document.createElement('div');
+  body.className = 'gantt-body';
+  const grid = document.createElement('div');
+  grid.className = 'gantt-grid-lines';
+  grid.style.gridTemplateColumns = colStr;
+  years.forEach(y => {
+    const s = new Date(y, 0, 1);
+    if (s < GANTT_START || s >= GANTT_END) return;
+    const line = document.createElement('div');
+    line.className = 'gantt-grid-line';
+    grid.appendChild(line);
+  });
+  body.appendChild(grid);
+
+  sorted.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'gantt-row';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'gantt-label';
+    lbl.innerHTML = `${p.customer}<span class="role-text">${p.role}</span>`;
+    row.appendChild(lbl);
+
+    const bars = document.createElement('div');
+    bars.className = 'gantt-bars';
+    const eTo  = p.to || TODAY;
+    const left = pct(p.from);
+    const w    = pct(eTo) - left;
+    if (w > 0) {
+      const bar = document.createElement('div');
+      bar.className = `gantt-bar bar-cat-${p.category}${!p.to ? ' ongoing' : ''}`;
+      bar.style.left  = left + '%';
+      bar.style.width = Math.max(w, 0.4) + '%';
+      bar.addEventListener('mouseenter', e => showTooltip(e, p));
+      bar.addEventListener('mousemove',  moveTooltip);
+      bar.addEventListener('mouseleave', hideTooltip);
+      bars.appendChild(bar);
+    }
+    row.appendChild(bars);
+    body.appendChild(row);
+  });
+  container.appendChild(body);
+}
+
+// ── Tooltip ──
+const tooltip = document.getElementById('tooltip');
+function fmtDate(d) { return d ? d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : 'current'; }
+
+function showTooltip(e, p) {
+  const eTo    = p.to || TODAY;
+  const months = Math.round((eTo - p.from) / (1000 * 60 * 60 * 24 * 30.44));
+  tooltip.innerHTML = `
+    <div class="tooltip-title">${p.customer}</div>
+    <div class="tooltip-dates">${fmtDate(p.from)} &rarr; ${p.to ? fmtDate(p.to) : '<b style="color:#0d90c8">ongoing</b>'} &bull; ${months} months</div>
+    <div class="tooltip-row"><span class="lbl">Role</span><span class="val">${p.role}</span></div>
+    <div class="tooltip-row"><span class="lbl">Industry</span><span class="val">${p.industry}</span></div>
+    <div class="tooltip-row"><span class="lbl">Scope</span><span class="val">${p.scope}</span></div>
+    ${p.dataSources && p.dataSources !== '—'
+      ? `<div class="tooltip-row"><span class="lbl">Data Sources</span><span class="val">${p.dataSources}</span></div>`
+      : ''}
+    <div class="tooltip-row"><span class="lbl">Tools</span><span class="val">${p.tools.join(', ')}</span></div>`;
+  tooltip.classList.add('visible');
+  moveTooltip(e);
+}
+function moveTooltip(e) {
+  const pad = 14, tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
+  let x = e.clientX + pad, y = e.clientY + pad;
+  if (x + tw > window.innerWidth  - 8) x = e.clientX - tw - pad;
+  if (y + th > window.innerHeight - 8) y = e.clientY - th - pad;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top  = y + 'px';
+}
+function hideTooltip() { tooltip.classList.remove('visible'); }
+
+buildFilters();
+renderGantt();
+</script>
+</body>
+</html>
